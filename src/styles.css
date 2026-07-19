@@ -1,0 +1,176 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+}
+
+:root {
+  --radius: 0.875rem;
+
+  /* LIGHT base — warm ivory */
+  --background: oklch(0.985 0.005 90);
+  --foreground: oklch(0.18 0.02 240);
+
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.965 0.008 90);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.02 240);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.02 240);
+
+  /* Brand emerald from HK Tech logo */
+  --brand: oklch(0.62 0.14 155);
+  --brand-foreground: oklch(0.99 0.005 90);
+
+  /* Dark ink used on hero / CTA bands */
+  --ink: oklch(0.16 0.015 240);
+  --ink-foreground: oklch(0.98 0.005 90);
+
+  --primary: oklch(0.62 0.14 155);
+  --primary-foreground: oklch(0.99 0.005 90);
+
+  --secondary: oklch(0.965 0.008 90);
+  --secondary-foreground: oklch(0.18 0.02 240);
+
+  --muted: oklch(0.955 0.008 90);
+  --muted-foreground: oklch(0.48 0.015 240);
+
+  --accent: oklch(0.94 0.02 155);
+  --accent-foreground: oklch(0.22 0.03 155);
+
+  --destructive: oklch(0.62 0.22 27);
+  --destructive-foreground: oklch(0.98 0.005 240);
+
+  --border: oklch(0.18 0.02 240 / 10%);
+  --input: oklch(0.18 0.02 240 / 14%);
+  --ring: oklch(0.62 0.14 155);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@utility glow-brand {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--brand) 30%, transparent),
+    0 30px 80px -30px color-mix(in oklab, var(--brand) 55%, transparent);
+}
+
+@utility glow-brand-cta {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--brand) 35%, transparent),
+    0 10px 28px -8px color-mix(in oklab, var(--brand) 55%, transparent),
+    0 24px 60px -20px color-mix(in oklab, var(--brand) 45%, transparent);
+}
+
+@utility text-brand-sheen {
+  background-image: linear-gradient(
+    105deg,
+    color-mix(in oklab, var(--brand) 75%, #1a3d32) 0%,
+    var(--brand) 45%,
+    color-mix(in oklab, var(--brand) 55%, #7dd3b0) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility card-soft {
+  box-shadow:
+    0 1px 0 0 color-mix(in oklab, var(--foreground) 4%, transparent),
+    0 20px 40px -24px color-mix(in oklab, var(--foreground) 18%, transparent);
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@utility animate-float-soft {
+  animation: float-soft 6s ease-in-out infinite;
+}
+
+@keyframes beam-drift {
+  0%, 100% { opacity: 0.55; transform: translate3d(0, 0, 0) rotate(18deg); }
+  50% { opacity: 0.85; transform: translate3d(12px, -8px, 0) rotate(18deg); }
+}
+
+@utility animate-beam-drift {
+  animation: beam-drift 10s ease-in-out infinite;
+}
+
+/* Soft dust / particles for atmosphere */
+@utility bg-hero-dust {
+  background-image: radial-gradient(
+      circle,
+      color-mix(in oklab, var(--brand) 45%, white) 0.8px,
+      transparent 1.2px
+    ),
+    radial-gradient(circle, rgba(255, 255, 255, 0.7) 0.6px, transparent 1px),
+    radial-gradient(circle, color-mix(in oklab, var(--brand) 30%, white) 0.7px, transparent 1.1px);
+  background-size: 120px 120px, 80px 80px, 160px 160px;
+  background-position: 0 0, 40px 60px, 20px 90px;
+}
+
+/* Grid paper background for light sections */
+@utility bg-grid-paper {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
