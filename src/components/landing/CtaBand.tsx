@@ -25,7 +25,7 @@ export function CtaBand() {
             Book a free consultation
           </a>
           <a
-            href="https://portal.hktech.in/"
+            href="https://portal.hktech.in/app/"
             className="inline-flex items-center rounded-lg border-2 border-brand bg-white px-6 py-3 text-sm font-semibold text-brand transition-colors hover:bg-accent"
           >
             Log in

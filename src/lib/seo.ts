@@ -33,7 +33,7 @@ export const CONTACT = {
     "HK Tech - Hardware & Software Services Provider Ahmedabad, Solaris Business Hub, 438, Ahmedabad, Gujarat 380013",
 } as const;
 
-export const APP_LOGIN_URL = "https://portal.hktech.in/";
+export const APP_LOGIN_URL = "https://portal.hktech.in/app/";
 export const OG_IMAGE_PATH = "/og-image.png";
 
 export function absoluteUrl(path = "/") {

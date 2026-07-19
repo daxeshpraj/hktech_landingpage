@@ -172,7 +172,7 @@ export function Nav() {
 
           <div className="flex items-center gap-2">
             <a
-              href="https://portal.hktech.in/"
+              href="https://portal.hktech.in/app/"
               className="inline-flex shrink-0 items-center rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground shadow-sm transition-transform hover:scale-[1.02] sm:px-5"
             >
               Log in

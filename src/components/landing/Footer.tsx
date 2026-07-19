@@ -33,7 +33,7 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a href="https://portal.hktech.in/" className="font-semibold text-brand hover:text-foreground">
+              <a href="https://portal.hktech.in/app/" className="font-semibold text-brand hover:text-foreground">
                 Log in
               </a>
             </li>
