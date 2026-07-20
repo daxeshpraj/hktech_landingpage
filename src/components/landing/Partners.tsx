@@ -156,7 +156,7 @@ function SidebarMockup() {
 /** Platform intro — Dzylo-style headline + sidebar visual + modules */
 export function Partners() {
   return (
-    <section id="product" className="scroll-mt-28 bg-white py-14 sm:py-20">
+    <section id="product" className="relative z-10 scroll-mt-28 bg-white pt-24 sm:pt-32 lg:pt-40">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
           <SidebarMockup />
@@ -218,7 +218,7 @@ export function Partners() {
           </div>
         </div>
 
-        <div className="mt-16">
+        <div className="mt-16 pb-14 sm:pb-20">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-semibold uppercase tracking-widest text-brand">
               Studio operations
