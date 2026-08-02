@@ -65,8 +65,19 @@ export function TrialSignupModal({ open, onOpenChange, trialDays }: Props) {
 
     setSuccess(true);
     setSubmitting(false);
+
+    const params = [
+      "trial=1",
+      `name=${encodeURIComponent(validated.payload.name)}`,
+      `phone=${encodeURIComponent(validated.payload.phone)}`,
+    ];
+    if (validated.payload.email) {
+      params.push(`email=${encodeURIComponent(validated.payload.email)}`);
+    }
+    const redirectUrl = `${APP_SIGNUP_URL}?${params.join("&")}`;
+
     window.setTimeout(() => {
-      window.location.assign(APP_SIGNUP_URL);
+      window.location.assign(redirectUrl);
     }, 1400);
   }
 
