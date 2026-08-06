@@ -1,38 +1,16 @@
-import { useEffect, useState } from "react";
 import dashboardHero from "@/assets/dashboard-hero.png";
 import logo from "@/assets/Logo.png";
 import { WA_HREF, WhatsAppIcon } from "@/components/landing/FloatingWhatsApp";
-import { TrialSignupModal } from "@/components/landing/TrialSignupModal";
-import { fetchTrialDays } from "@/lib/trial";
 
 const DISSOLVE_MASK =
   "linear-gradient(to bottom, transparent 0%, transparent 42%, rgba(0,0,0,0.35) 58%, rgba(0,0,0,0.85) 72%, black 88%)";
 
-export function Hero() {
-  const [trialDays, setTrialDays] = useState<number | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
+type Props = {
+  trialDays: number | null;
+  onOpenTrial: () => void;
+};
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 4000);
-
-    fetchTrialDays(controller.signal)
-      .then((days) => {
-        if (days != null) setTrialDays(days);
-      })
-      .catch(() => {
-        // Intentionally ignore — button falls back to text without a day count.
-      })
-      .finally(() => {
-        window.clearTimeout(timeout);
-      });
-
-    return () => {
-      window.clearTimeout(timeout);
-      controller.abort();
-    };
-  }, []);
-
+export function Hero({ trialDays, onOpenTrial }: Props) {
   const trialLabel =
     trialDays != null ? `Start your ${trialDays}-day free trial` : "Start your free trial";
 
@@ -81,7 +59,7 @@ export function Hero() {
           </a>
           <button
             type="button"
-            onClick={() => setModalOpen(true)}
+            onClick={onOpenTrial}
             className="inline-flex items-center rounded-full bg-[#2f9e6e] px-7 py-3.5 text-sm font-semibold text-white shadow-[0_14px_32px_-12px_rgba(47,158,110,0.7)] transition-transform hover:scale-[1.03] hover:bg-[#278a5f]"
           >
             {trialLabel}
@@ -116,7 +94,6 @@ export function Hero() {
                 className="relative z-0 h-auto w-full object-cover object-top"
               />
 
-              {/* Blurred echo — melts the lower half into mist */}
               <img
                 src={dashboardHero}
                 alt=""
@@ -130,13 +107,11 @@ export function Hero() {
                 }}
               />
 
-              {/* Frost veil */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[62%] bg-gradient-to-b from-transparent via-white/55 to-white"
               />
 
-              {/* Soft bloom at the dissolve edge */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-x-[-8%] bottom-0 z-30 h-24 bg-gradient-to-t from-white via-white/90 to-transparent blur-lg sm:h-28"
@@ -145,18 +120,11 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Ambient tail — seamless handoff into next section */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-4 -bottom-6 h-20 bg-gradient-to-b from-white/70 to-white blur-md sm:-bottom-8 sm:h-24"
         />
       </div>
-
-      <TrialSignupModal
-        open={modalOpen}
-        onOpenChange={setModalOpen}
-        trialDays={trialDays}
-      />
     </section>
   );
 }

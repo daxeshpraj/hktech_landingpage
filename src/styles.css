@@ -154,6 +154,24 @@
   animation: beam-drift 10s ease-in-out infinite;
 }
 
+@keyframes banner-shimmer {
+  0% { background-position: 120% 0; }
+  100% { background-position: -120% 0; }
+}
+
+@utility animate-banner-shimmer {
+  animation: banner-shimmer 2.8s ease-in-out infinite;
+}
+
+@keyframes banner-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.12); }
+}
+
+@utility animate-banner-pulse {
+  animation: banner-pulse 1.6s ease-in-out infinite;
+}
+
 /* Soft dust / particles for atmosphere */
 @utility bg-hero-dust {
   background-image: radial-gradient(

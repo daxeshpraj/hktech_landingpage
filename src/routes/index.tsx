@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Capabilities } from "@/components/landing/Capabilities";
 import { CtaBand } from "@/components/landing/CtaBand";
 import { FAQ, FAQS } from "@/components/landing/FAQ";
@@ -8,6 +9,10 @@ import { Footer } from "@/components/landing/Footer";
 import { Hero } from "@/components/landing/Hero";
 import { Nav } from "@/components/landing/Nav";
 import { Partners } from "@/components/landing/Partners";
+import { TrialFlashBanner } from "@/components/landing/TrialFlashBanner";
+import { TrialFlashPopup } from "@/components/landing/TrialFlashPopup";
+import { TrialSignupModal } from "@/components/landing/TrialSignupModal";
+import { fetchTrialDays } from "@/lib/trial";
 import {
   APP_LOGIN_URL,
   CONTACT,
@@ -184,11 +189,36 @@ export const Route = createFileRoute("/")({
 });
 
 function LandingPage() {
+  const [trialDays, setTrialDays] = useState<number | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 4000);
+
+    fetchTrialDays(controller.signal)
+      .then((days) => {
+        if (days != null) setTrialDays(days);
+      })
+      .catch(() => {
+        // Banner/hero fall back to text without a day count
+      })
+      .finally(() => {
+        window.clearTimeout(timeout);
+      });
+
+    return () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
+  }, []);
+
   return (
     <div className="relative min-h-screen bg-background text-foreground selection:bg-brand/25">
+      <TrialFlashBanner trialDays={trialDays} onClaim={() => setModalOpen(true)} />
       <Nav />
       <main id="main-content">
-        <Hero />
+        <Hero trialDays={trialDays} onOpenTrial={() => setModalOpen(true)} />
         <Partners />
         <FeatureHighlights />
         <FAQ />
@@ -197,6 +227,12 @@ function LandingPage() {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <TrialFlashPopup trialDays={trialDays} onClaim={() => setModalOpen(true)} />
+      <TrialSignupModal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        trialDays={trialDays}
+      />
     </div>
   );
 }
