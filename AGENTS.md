@@ -22,6 +22,11 @@ changed. Do not reference `crm.hktech.in` in any deploy instructions.
 - **Build**: `npm run build` — outputs to `.output/` (Nitro `node-server` preset,
   NOT the default `cloudflare-module` preset — this is a real Node SSR server, not a
   Cloudflare Worker or static export)
+- **Static build (no Node at runtime)**: `npm run build:static` — runs the SSR server
+  briefly at build time and writes `.output/public/index.html` plus assets. Nginx can
+  serve `.output/public/` directly (see Static hosting below).
+- **Vite pin**: `vite` is pinned to `8.0.8` in `package.json` to avoid a Rolldown chunk
+  optimizer bug (`__exportAll is not a function`) in Vite 8.0.10+ SSR bundles.
 - **Process manager**: PM2
 - **PM2 process name**: `hktech-landing` (exact name — NOT `hktech-crm`, NOT
   anything else. Using the wrong name will start a second, conflicting process on
@@ -56,3 +61,21 @@ pm2 startup   # then run the printed sudo command
 There is currently no CI/CD pipeline for this app — deploys are manual, run directly
 on the EC2 box over SSH. (The existing CRM app at `/app` does have GitHub Actions
 CI/CD — don't confuse the two when suggesting deploy steps.)
+
+### Static hosting (Nginx only — recommended)
+
+Use this when you do not want PM2/Node running for the landing page:
+
+```bash
+cd /home/ubuntu/landing
+git pull origin main
+npm install
+npm run build:static
+```
+
+Point Nginx `root` for `portal.hktech.in/` at `/home/ubuntu/landing/.output/public`
+(with `try_files $uri $uri/ /index.html;`). Stop/disable the `hktech-landing` PM2
+process if it was previously used for SSR — it is not needed for static hosting.
+
+After deploy, verify: `curl -sI https://portal.hktech.in/ | head` should return
+`200` and the page title should mention HK Tech (not "This page didn't load").
